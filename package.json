@@ -1,0 +1,19 @@
+{
+  "name": "postman-jsdoc-theme",
+  "version": "0.0.1",
+  "description": "A JSDoc Theme / Template",
+  "main": "publish.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/postmanlabs/postman-jsdoc-theme.git"
+  },
+  "author": {
+    "name": "Postman Team",
+    "email": "help@getpostman.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/postmanlabs/postman-jsdoc-theme/issues"
+  },
+  "homepage": "https://github.com/postmanlabs/postman-jsdoc-theme",
+}
