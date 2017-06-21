@@ -349,7 +349,13 @@ function linktoExternal(longName, name) {
  * @return {string} The HTML for the navigation sidebar.
  */
 function buildNav(members) {
-    var nav = '<h2><a href="index.html">Home</a></h2>';
+    var pkgVersion = env.opts && env.opts.query && env.opts.query.pkgVersion;
+
+    if (typeof pkgVersion === 'string' && pkgVersion[0] !== 'v') {
+        pkgVersion = 'v' + pkgVersion;
+    }
+
+    var nav = '<h2><a href="index.html">Home' + (pkgVersion ? pkgVersion : '') + '</a></h2>';
     var seen = {};
     var seenTutorials = {};
 

@@ -16,6 +16,11 @@ Clone repository to your designated `jsdoc` template directory, then:
 $ jsdoc entry-file.js -t path/to/postman-jsdoc-theme
 ```
 
+Optionally, provide a package version on the command line, which will be rendered into the final documentation
+```bash
+$ jsdoc entry-file.js -t path/to/postman-jsdoc-theme --query 'pkgVersion=2.3.0'
+```
+
 ### Node.js Dependency
 
 In your projects `package.json` file add a generate script:
