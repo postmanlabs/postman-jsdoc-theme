@@ -355,7 +355,7 @@ function buildNav(members) {
         pkgVersion = 'v' + pkgVersion;
     }
 
-    var nav = '<h2><a href="index.html">Home' + (pkgVersion ? pkgVersion : '') + '</a></h2>';
+    var nav = '<h2><a href="index.html">Home' + (pkgVersion ? (' ' + pkgVersion) : '') + '</a></h2>';
     var seen = {};
     var seenTutorials = {};
 
