@@ -350,11 +350,6 @@ function linktoExternal(longName, name) {
  */
 function buildNav(members) {
     var pkgVersion = env.opts && env.opts.query && env.opts.query.pkgVersion;
-
-    if (typeof pkgVersion === 'string' && pkgVersion[0] !== 'v') {
-        pkgVersion = 'v' + pkgVersion;
-    }
-
     var nav = '<h2><a href="index.html">Home' + (pkgVersion ? (' ' + pkgVersion) : '') + '</a></h2>';
     var seen = {};
     var seenTutorials = {};
