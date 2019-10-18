@@ -205,12 +205,13 @@ function getPathFromDoclet(doclet) {
         doclet.meta.filename;
 }
 
-function generate(type, title, docs, filename, resolveLinks) {
+function generate(type, title, orgname, docs, filename, resolveLinks) {
     resolveLinks = resolveLinks === false ? false : true;
 
     var docData = {
         type: type,
         title: title,
+        orgname: orgname,
         docs: docs
     };
 
@@ -224,7 +225,7 @@ function generate(type, title, docs, filename, resolveLinks) {
     fs.writeFileSync(outpath, html, 'utf8');
 }
 
-function generateSourceFiles(sourceFiles, encoding) {
+function generateSourceFiles(sourceFiles, encoding, orgname) {
     encoding = encoding || 'utf8';
     Object.keys(sourceFiles).forEach(function(file) {
         var source;
@@ -242,7 +243,7 @@ function generateSourceFiles(sourceFiles, encoding) {
             logger.error('Error while generating source file %s: %s', file, e.message);
         }
 
-        generate('Source', sourceFiles[file].shortened, [source], sourceOutfile, false);
+        generate('Source', sourceFiles[file].shortened, orgname, [source], sourceOutfile, false);
     });
 }
 
@@ -395,6 +396,8 @@ exports.publish = function(taffyData, opts, tutorials) {
 
     var conf = env.conf.templates || {};
     conf.default = conf.default || {};
+
+    var orgname = opts.orgname;
 
     var templatePath = path.normalize(opts.template);
     view = new template.Template( path.join(templatePath, 'tmpl') );
@@ -575,18 +578,18 @@ exports.publish = function(taffyData, opts, tutorials) {
 
     // generate the pretty-printed source files first so other pages can link to them
     if (outputSourceFiles) {
-        generateSourceFiles(sourceFiles, opts.encoding);
+        generateSourceFiles(sourceFiles, opts.encoding, opts.orgname);
     }
 
     if (members.globals.length) { 
-        generate('', 'Global', [{kind: 'globalobj'}], globalUrl); 
+        generate('', 'Global', orgname, [{kind: 'globalobj'}], globalUrl); 
     }
 
     // index page displays information from package.json and lists files
     var files = find({kind: 'file'});
     var packages = find({kind: 'package'});
 
-    generate('', 'Home',
+    generate('', 'Home', orgname,
         packages.concat(
             [{kind: 'mainpage', readme: opts.readme, longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page'}]
         ).concat(files),
@@ -603,32 +606,32 @@ exports.publish = function(taffyData, opts, tutorials) {
     Object.keys(helper.longnameToUrl).forEach(function(longname) {
         var myModules = helper.find(modules, {longname: longname});
         if (myModules.length) {
-            generate('Module', myModules[0].name, myModules, helper.longnameToUrl[longname]);
+            generate('Module', myModules[0].name, orgname, myModules, helper.longnameToUrl[longname]);
         }
 
         var myClasses = helper.find(classes, {longname: longname});
         if (myClasses.length) {
-            generate('Class', myClasses[0].name, myClasses, helper.longnameToUrl[longname]);
+            generate('Class', myClasses[0].name, orgname, myClasses, helper.longnameToUrl[longname]);
         }
 
         var myNamespaces = helper.find(namespaces, {longname: longname});
         if (myNamespaces.length) {
-            generate('Namespace', myNamespaces[0].name, myNamespaces, helper.longnameToUrl[longname]);
+            generate('Namespace', myNamespaces[0].name, orgname, myNamespaces, helper.longnameToUrl[longname]);
         }
 
         var myMixins = helper.find(mixins, {longname: longname});
         if (myMixins.length) {
-            generate('Mixin', myMixins[0].name, myMixins, helper.longnameToUrl[longname]);
+            generate('Mixin', myMixins[0].name, orgname, myMixins, helper.longnameToUrl[longname]);
         }
 
         var myExternals = helper.find(externals, {longname: longname});
         if (myExternals.length) {
-            generate('External', myExternals[0].name, myExternals, helper.longnameToUrl[longname]);
+            generate('External', myExternals[0].name, orgname, myExternals, helper.longnameToUrl[longname]);
         }
 
         var myInterfaces = helper.find(interfaces, {longname: longname});
         if (myInterfaces.length) {
-            generate('Interface', myInterfaces[0].name, myInterfaces, helper.longnameToUrl[longname]);
+            generate('Interface', myInterfaces[0].name, orgname, myInterfaces, helper.longnameToUrl[longname]);
         }
     });
 
